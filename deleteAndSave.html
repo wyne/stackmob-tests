@@ -18,12 +18,12 @@
             });
 
             // Declare this once on the page to associate a schema
-            var Object = StackMob.Model.extend({
+            var TestObject = StackMob.Model.extend({
                 schemaName: 'testObject'
             });
 
             // Get an existing user
-            var object = new Object({"id": "80514d7032154bd8a63793c46d0d8ca5"});
+            var object = new TestObject({"id": "80514d7032154bd8a63793c46d0d8ca5"});
 
             object.fetch({
                 success: function(){
