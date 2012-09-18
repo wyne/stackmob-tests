@@ -19,7 +19,7 @@
 
             // Declare this once on the page to associate a schema
             var TestObject = StackMob.Model.extend({
-                schemaName: 'testObject'
+                schemaName: 'testobject'
             });
 
             // Get an existing user
@@ -27,7 +27,7 @@
 
             object.fetch({
                 success: function(){
-                    user.deleteAndSave('stringArray', ['a', 'b'], StackMob.SOFT_DELETE, { 
+                    user.deleteAndSave('stringarray', ['a', 'b'], StackMob.SOFT_DELETE, { 
                         success: function() { 
                             console.log("success");
                             console.log( "user" );
