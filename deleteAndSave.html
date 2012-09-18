@@ -6,10 +6,22 @@
         <script type="text/javascript" src="http://static.stackmob.com/js/backbone-0.9.2-min.js"></script>
         <script type="text/javascript" src="http://static.stackmob.com/js/2.5.3-crypto-sha1-hmac.js"></script>
         <script type="text/javascript" src="stackmob.js"></script>
+        <!-- <script type="text/javascript" src="http://static.stackmob.com/js/stackmob-js-0.5.5-min.js"></script> -->
+        <script type="text/javascript" src="http://static.stackmob.com/resources/js/jsonFormatter-0.1.0-min.js"></script>
     </head>
     <body>
 
+        <p>
+            <button id="fetch">Fetch</button>
+            <button id="save">Save {'a','b','c','d'}</button>
+            <button id="delete">DeleteAndSave</button>
+        </p>
+        <p>
+            <textarea rows="15" cols="100"></textarea>
+        </p>
+
         <script type="text/javascript">
+            // Initialize StackMob
             StackMob.init({
                 appName: "stackmobtests",
                 clientSubdomain: "justinwyne015",
@@ -22,26 +34,48 @@
                 schemaName: 'testobject'
             });
 
-            // Get an existing user
-            var object = new TestObject({"id": "80514d7032154bd8a63793c46d0d8ca5"});
+            // Get existing object
+            var object = new TestObject({"testobject_id": "80514d7032154bd8a63793c46d0d8ca5"});
 
-            object.fetch({
-                success: function(){
-                    user.deleteAndSave('stringarray', ['a', 'b'], StackMob.SOFT_DELETE, { 
-                        success: function() { 
-                            console.log("success");
-                            console.log( "user" );
-                            console.log( JSON.stringify( object.toJSON() ) );
-                        },
-                        error: function() { 
-                            console.log("error")
-                        }
-                    });
-                },
-                error: function(){
-                    console.log("error");
-                }
+            $("#fetch").click( function(){
+
+                // Fetch Object
+                object.fetch({
+                    success: function(model){
+                        var jf = new JSONFormatter((model.toJSON ? model.toJSON() : model), 'pre');
+                        $("textarea").text( jf.formatJSON() );
+                    },
+                    error: function(){
+                        console.log("error");
+                    }
+                });
+
             });
+
+            $("#save").click( function(){
+                object.save({'stringarray': ['a', 'b', 'c', 'd']}, {
+                    success: function(model){
+                        var jf = new JSONFormatter((model.toJSON ? model.toJSON() : model), 'pre');
+                        $("textarea").text( jf.formatJSON() );
+                    },
+                    error: function(){
+                        // ...
+                    }
+                });
+            });
+
+            $("#delete").click( function(){
+                object.deleteAndSave('stringarray', ['a', 'b'], StackMob.SOFT_DELETE, { 
+                    success: function() { 
+                        var jf = new JSONFormatter((object.toJSON ? object.toJSON() : object), 'pre');
+                        $("textarea").text( jf.formatJSON() );
+                    },
+                    error: function() { 
+                        console.log("error")
+                    }
+                });
+            });
+
 
         </script>
 
